@@ -16,6 +16,10 @@
 #define XPOWERS_AXP192_AXP2101_ADDRESS 0x34
 #endif
 
+#ifndef SCD30_I2CADDR_DEFAULT
+#define SCD30_I2CADDR_DEFAULT 0x61
+#endif
+
 bool in_array(uint8_t *array, int size, uint8_t lookfor)
 {
     int i;
@@ -204,6 +208,18 @@ void ScanI2CTwoWire::scanPort(I2CPort port, uint8_t *address, uint8_t asize)
             switch (addr.address) {
             case SSD1306_ADDRESS:
                 type = probeOLED(addr);
+                break;
+
+            case SCD30_I2CADDR_DEFAULT:
+                registerValue = getRegisterValue(ScanI2CTwoWire::RegisterLocation(addr, (ScanI2C::RegisterAddress)0xD100), 2);
+                LOG_DEBUG("Register MFG_UID: 0x%x", registerValue);
+                if (registerValue == 0x60) {
+                    LOG_INFO("SCD30 sensor found at address 0x%x", (uint8_t)addr.address);
+                    type = SCD30;
+                } else {
+                    LOG_INFO("Unknown sensor found at address 0x%x", (uint8_t)addr.address);
+                    type = SCD30;
+                }
                 break;
 
 #if !defined(ARCH_PORTDUINO) && !defined(ARCH_STM32WL)
