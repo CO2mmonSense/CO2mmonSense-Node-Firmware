@@ -33,13 +33,13 @@ bool SCD30Sensor::getMetrics(meshtastic_Telemetry *measurement)
 {
     measurement->variant.environment_metrics.has_temperature = true;
     measurement->variant.environment_metrics.has_relative_humidity = true;
-    measurement->variant.air_quality_metrics.has_co2 = true;
+    measurement->variant.environment_metrics.has_co2 = true;
 
     LOG_DEBUG("SCD30 getMetrics");
     scd30.read();
     measurement->variant.environment_metrics.temperature = scd30.temperature;
     measurement->variant.environment_metrics.relative_humidity = scd30.relative_humidity;
-    measurement->variant.air_quality_metrics.co2 = scd30.CO2;
+    measurement->variant.environment_metrics.co2 = scd30.CO2;
 
     return true;
 }

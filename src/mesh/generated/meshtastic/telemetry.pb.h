@@ -155,6 +155,8 @@ typedef struct _meshtastic_EnvironmentMetrics {
     /* Wind lull in m/s */
     bool has_wind_lull;
     float wind_lull;
+    bool has_co2;
+    float co2;
 } meshtastic_EnvironmentMetrics;
 
 /* Power Metrics (voltage / current / etc) */
@@ -218,8 +220,6 @@ typedef struct _meshtastic_AirQualityMetrics {
     bool has_particles_100um;
     uint32_t particles_100um;
     /* 10.0um Particle Count */
-    bool has_co2;
-    uint32_t co2;
 } meshtastic_AirQualityMetrics;
 
 /* Local device mesh statistics */
@@ -313,7 +313,7 @@ extern "C" {
 
 /* Initializer values for message structs */
 #define meshtastic_DeviceMetrics_init_default    {false, 0, false, 0, false, 0, false, 0, false, 0}
-#define meshtastic_EnvironmentMetrics_init_default {false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0}
+#define meshtastic_EnvironmentMetrics_init_default {false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0}
 #define meshtastic_PowerMetrics_init_default     {false, 0, false, 0, false, 0, false, 0, false, 0, false, 0}
 #define meshtastic_AirQualityMetrics_init_default {false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0}
 #define meshtastic_LocalStats_init_default       {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
@@ -321,7 +321,7 @@ extern "C" {
 #define meshtastic_Telemetry_init_default        {0, 0, {meshtastic_DeviceMetrics_init_default}}
 #define meshtastic_Nau7802Config_init_default    {0, 0}
 #define meshtastic_DeviceMetrics_init_zero       {false, 0, false, 0, false, 0, false, 0, false, 0}
-#define meshtastic_EnvironmentMetrics_init_zero  {false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0}
+#define meshtastic_EnvironmentMetrics_init_zero  {false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0}
 #define meshtastic_PowerMetrics_init_zero        {false, 0, false, 0, false, 0, false, 0, false, 0, false, 0}
 #define meshtastic_AirQualityMetrics_init_zero   {false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0}
 #define meshtastic_LocalStats_init_zero          {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
@@ -370,7 +370,7 @@ extern "C" {
 #define meshtastic_AirQualityMetrics_particles_25um_tag 10
 #define meshtastic_AirQualityMetrics_particles_50um_tag 11
 #define meshtastic_AirQualityMetrics_particles_100um_tag 12
-#define meshtastic_AirQualityMetrics_co2_tag     13
+#define meshtastic_EnvironmentMetrics_co2_tag     18
 #define meshtastic_LocalStats_uptime_seconds_tag 1
 #define meshtastic_LocalStats_channel_utilization_tag 2
 #define meshtastic_LocalStats_air_util_tx_tag    3
@@ -422,7 +422,8 @@ X(a, STATIC,   OPTIONAL, UINT32,   wind_direction,   13) \
 X(a, STATIC,   OPTIONAL, FLOAT,    wind_speed,       14) \
 X(a, STATIC,   OPTIONAL, FLOAT,    weight,           15) \
 X(a, STATIC,   OPTIONAL, FLOAT,    wind_gust,        16) \
-X(a, STATIC,   OPTIONAL, FLOAT,    wind_lull,        17)
+X(a, STATIC,   OPTIONAL, FLOAT,    wind_lull,        17) \
+X(a, STATIC,   OPTIONAL, FLOAT,   co2,              18)
 #define meshtastic_EnvironmentMetrics_CALLBACK NULL
 #define meshtastic_EnvironmentMetrics_DEFAULT NULL
 
@@ -448,8 +449,7 @@ X(a, STATIC,   OPTIONAL, UINT32,   particles_05um,    8) \
 X(a, STATIC,   OPTIONAL, UINT32,   particles_10um,    9) \
 X(a, STATIC,   OPTIONAL, UINT32,   particles_25um,   10) \
 X(a, STATIC,   OPTIONAL, UINT32,   particles_50um,   11) \
-X(a, STATIC,   OPTIONAL, UINT32,   particles_100um,  12) \
-X(a, STATIC,   OPTIONAL, UINT32,   co2,              13)
+X(a, STATIC,   OPTIONAL, UINT32,   particles_100um,  12) 
 #define meshtastic_AirQualityMetrics_CALLBACK NULL
 #define meshtastic_AirQualityMetrics_DEFAULT NULL
 

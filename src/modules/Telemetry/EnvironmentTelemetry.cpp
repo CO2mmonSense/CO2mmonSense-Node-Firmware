@@ -220,10 +220,17 @@ void EnvironmentTelemetryModule::drawFrame(OLEDDisplay *display, OLEDDisplayUiSt
             String(UnitConversions::CelsiusToFahrenheit(lastMeasurement.variant.environment_metrics.temperature), 0) + "°F";
     }
 
+    String last_co2 = String(lastMeasurement.variant.environment_metrics.co2, 0) + "ppm";
+
     // Continue with the remaining details
     display->drawString(x, y += _fontHeight(FONT_SMALL),
                         "Temp/Hum: " + last_temp + " / " +
                             String(lastMeasurement.variant.environment_metrics.relative_humidity, 0) + "%");
+
+    if (lastMeasurement.variant.environment_metrics.co2 != 0) {
+        display->drawString(x, y += _fontHeight(FONT_SMALL),
+                            "CO2: " + last_co2);        
+    }
 
     if (lastMeasurement.variant.environment_metrics.barometric_pressure != 0) {
         display->drawString(x, y += _fontHeight(FONT_SMALL),
@@ -256,10 +263,10 @@ bool EnvironmentTelemetryModule::handleReceivedProtobuf(const meshtastic_MeshPac
         const char *sender = getSenderShortName(mp);
 
         LOG_INFO("(Received from %s): barometric_pressure=%f, current=%f, gas_resistance=%f, relative_humidity=%f, "
-                 "temperature=%f",
+                 "temperature=%f, co2=%f",
                  sender, t->variant.environment_metrics.barometric_pressure, t->variant.environment_metrics.current,
                  t->variant.environment_metrics.gas_resistance, t->variant.environment_metrics.relative_humidity,
-                 t->variant.environment_metrics.temperature);
+                 t->variant.environment_metrics.temperature, t->variant.environment_metrics.co2);
         LOG_INFO("(Received from %s): voltage=%f, IAQ=%d, distance=%f, lux=%f", sender, t->variant.environment_metrics.voltage,
                  t->variant.environment_metrics.iaq, t->variant.environment_metrics.distance, t->variant.environment_metrics.lux);
 
@@ -441,10 +448,10 @@ bool EnvironmentTelemetryModule::sendTelemetry(NodeNum dest, bool phoneOnly)
 #else
     if (getEnvironmentTelemetry(&m)) {
 #endif
-        LOG_INFO("Send: barometric_pressure=%f, current=%f, gas_resistance=%f, relative_humidity=%f, temperature=%f",
+        LOG_INFO("Send: barometric_pressure=%f, current=%f, gas_resistance=%f, relative_humidity=%f, temperature=%f, co2=%f",
                  m.variant.environment_metrics.barometric_pressure, m.variant.environment_metrics.current,
                  m.variant.environment_metrics.gas_resistance, m.variant.environment_metrics.relative_humidity,
-                 m.variant.environment_metrics.temperature);
+                 m.variant.environment_metrics.temperature, m.variant.environment_metrics.co2);
         LOG_INFO("Send: voltage=%f, IAQ=%d, distance=%f, lux=%f", m.variant.environment_metrics.voltage,
                  m.variant.environment_metrics.iaq, m.variant.environment_metrics.distance, m.variant.environment_metrics.lux);
 

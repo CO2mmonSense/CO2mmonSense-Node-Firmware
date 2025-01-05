@@ -67,6 +67,7 @@ std::string MeshPacketSerializer::JsonSerialize(const meshtastic_MeshPacket *mp,
                 } else if (decoded->which_variant == meshtastic_Telemetry_environment_metrics_tag) {
                     msgPayload["temperature"] = new JSONValue(decoded->variant.environment_metrics.temperature);
                     msgPayload["relative_humidity"] = new JSONValue(decoded->variant.environment_metrics.relative_humidity);
+                    msgPayload["co2"] = new JSONValue(decoded->variant.environment_metrics.co2);
                     msgPayload["barometric_pressure"] = new JSONValue(decoded->variant.environment_metrics.barometric_pressure);
                     msgPayload["gas_resistance"] = new JSONValue(decoded->variant.environment_metrics.gas_resistance);
                     msgPayload["voltage"] = new JSONValue(decoded->variant.environment_metrics.voltage);

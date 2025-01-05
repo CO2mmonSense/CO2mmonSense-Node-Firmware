@@ -202,6 +202,7 @@ void ScanI2CTwoWire::scanPort(I2CPort port, uint8_t *address, uint8_t asize)
         err = i2cBus->endTransmission();
 #endif
         type = NONE;
+        LOG_DEBUG("Scanning for I2C address 0x%x, err = %d", addr.address, err);
         if (err == 0) {
             LOG_DEBUG("I2C device found at address 0x%x", addr.address);
 
