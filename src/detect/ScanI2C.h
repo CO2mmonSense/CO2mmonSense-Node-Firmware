@@ -64,7 +64,8 @@ class ScanI2C
         MAX30102,
         TPS65233,
         MPR121KB,
-        SCD30
+        SCD30,
+        SNGCJA5
     } DeviceType;
 
     // typedef uint8_t DeviceAddress;

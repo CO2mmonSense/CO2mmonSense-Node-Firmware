@@ -77,7 +77,9 @@ typedef enum _meshtastic_TelemetrySensorType {
     /* MLX90614 non-contact IR temperature sensor */
     meshtastic_TelemetrySensorType_MLX90614 = 31,
     /* SCD40/SCD41 CO2, humidity, temperature sensor */
-    meshtastic_TelemetrySensorType_SCD4X = 32
+    meshtastic_TelemetrySensorType_SCD4X = 32,
+    /* Panasonic SN-JCGA5 PM Sensor*/
+    meshtastic_TelemetrySensorType_PANASONIC_PM = 33
 } meshtastic_TelemetrySensorType;
 
 /* Struct definitions */

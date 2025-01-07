@@ -20,6 +20,10 @@
 #define SCD30_I2CADDR_DEFAULT 0x61
 #endif
 
+#ifndef SNGCJA5_ADDR
+#define SNGCJA5_ADDR 0x33
+#endif
+
 bool in_array(uint8_t *array, int size, uint8_t lookfor)
 {
     int i;
@@ -220,6 +224,18 @@ void ScanI2CTwoWire::scanPort(I2CPort port, uint8_t *address, uint8_t asize)
                 } else {
                     LOG_INFO("Unknown sensor found at address 0x%x", (uint8_t)addr.address);
                     type = SCD30;
+                }
+                break;
+            
+            case SNGCJA5_ADDR:
+                registerValue = getRegisterValue(ScanI2CTwoWire::RegisterLocation(addr, INSERT HERE));
+                LOG_DEBUG("Register MFG_UID: 0x%x", registerValue);
+                if (registerValue == INSERT HERE) {
+                    LOG_INFO("SNGCJA5 sensor found at address 0x%x", (uint8_t)addr.address);
+                    type = SNGCJA5;
+                } else {
+                    LOG_INFO("Unknown sensor found at address 0x%x", (uint8_t)addr.address);
+                    type = SNGCJA5;
                 }
                 break;
 

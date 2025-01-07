@@ -615,6 +615,7 @@ void setup()
     SCANNER_TO_SENSORS_MAP(ScanI2C::DeviceType::ICM20948, meshtastic_TelemetrySensorType_ICM20948)
     SCANNER_TO_SENSORS_MAP(ScanI2C::DeviceType::MAX30102, meshtastic_TelemetrySensorType_MAX30102)
     SCANNER_TO_SENSORS_MAP(ScanI2C::DeviceType::SCD30, meshtastic_TelemetrySensorType_CUSTOM_SENSOR)
+    SCANNER_TO_SENSORS_MAP(ScanI2C::DeviceType::SNGCJA5, meshtastic_TelemetrySensorType_PANASONIC_PM)
 
     i2cScanner.reset();
 #endif
