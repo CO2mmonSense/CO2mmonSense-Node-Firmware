@@ -226,18 +226,8 @@ void ScanI2CTwoWire::scanPort(I2CPort port, uint8_t *address, uint8_t asize)
                     type = SCD30;
                 }
                 break;
-            
-            case SNGCJA5_ADDR:
-                registerValue = getRegisterValue(ScanI2CTwoWire::RegisterLocation(addr, INSERT HERE));
-                LOG_DEBUG("Register MFG_UID: 0x%x", registerValue);
-                if (registerValue == INSERT HERE) {
-                    LOG_INFO("SNGCJA5 sensor found at address 0x%x", (uint8_t)addr.address);
-                    type = SNGCJA5;
-                } else {
-                    LOG_INFO("Unknown sensor found at address 0x%x", (uint8_t)addr.address);
-                    type = SNGCJA5;
-                }
-                break;
+
+                SCAN_SIMPLE_CASE(SNGCJA5_ADDR, SNGCJA5, "SN-GCJA5 PM Sensor Found")
 
 #if !defined(ARCH_PORTDUINO) && !defined(ARCH_STM32WL)
             case ATECC608B_ADDR:
