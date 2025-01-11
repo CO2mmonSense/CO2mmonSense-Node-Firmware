@@ -90,9 +90,6 @@ bool AirQualityTelemetryModule::handleReceivedProtobuf(const meshtastic_MeshPack
                  t->variant.air_quality_metrics.pm10_standard, t->variant.air_quality_metrics.pm25_standard,
                  t->variant.air_quality_metrics.pm100_standard);
 
-        LOG_INFO("                  | PM1.0(Environmental)=%i, PM2.5(Environmental)=%i, PM10.0(Environmental)=%i",
-                 t->variant.air_quality_metrics.pm10_environmental, t->variant.air_quality_metrics.pm25_environmental,
-                 t->variant.air_quality_metrics.pm100_environmental);
 #endif
         // release previous packet before occupying a new spot
         if (lastMeasurementPacket != nullptr)
@@ -117,16 +114,8 @@ bool AirQualityTelemetryModule::getAirQualityTelemetry(meshtastic_Telemetry *m)
     m->variant.air_quality_metrics.pm25_standard = data.pm25_standard;
     m->variant.air_quality_metrics.pm100_standard = data.pm100_standard;
 
-    m->variant.air_quality_metrics.pm10_environmental = data.pm10_env;
-    m->variant.air_quality_metrics.pm25_environmental = data.pm25_env;
-    m->variant.air_quality_metrics.pm100_environmental = data.pm100_env;
-
     LOG_INFO("Send: PM1.0(Standard)=%i, PM2.5(Standard)=%i, PM10.0(Standard)=%i", m->variant.air_quality_metrics.pm10_standard,
              m->variant.air_quality_metrics.pm25_standard, m->variant.air_quality_metrics.pm100_standard);
-
-    LOG_INFO("         | PM1.0(Environmental)=%i, PM2.5(Environmental)=%i, PM10.0(Environmental)=%i",
-             m->variant.air_quality_metrics.pm10_environmental, m->variant.air_quality_metrics.pm25_environmental,
-             m->variant.air_quality_metrics.pm100_environmental);
 
     return true;
 }

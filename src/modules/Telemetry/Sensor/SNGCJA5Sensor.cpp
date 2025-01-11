@@ -31,14 +31,14 @@ void SNGCJA5Sensor::setup() {}
 
 bool SNGCJA5Sensor::getMetrics(meshtastic_Telemetry *measurement)
 {
-    measurement->variant.air_quality_metrics.has_pm10_environmental = true;
-    measurement->variant.air_quality_metrics.has_pm25_environmental = true;
-    measurement->variant.air_quality_metrics.has_pm100_environmental = true;
+    measurement->variant.environment_metrics.has_pm10_environmental = true;
+    measurement->variant.environment_metrics.has_pm25_environmental = true;
+    measurement->variant.environment_metrics.has_pm100_environmental = true;
 
     LOG_DEBUG("SNGCJA5 getMetrics");
-    measurement->variant.air_quality_metrics.pm10_environmental = SNGCJA5.getPM1_0();
-    measurement->variant.air_quality_metrics.pm25_environmental = SNGCJA5.getPM2_5();
-    measurement->variant.air_quality_metrics.pm100_environmental = SNGCJA5.getPM10();
+    measurement->variant.environment_metrics.pm10_environmental = SNGCJA5.getPM1_0();
+    measurement->variant.environment_metrics.pm25_environmental = SNGCJA5.getPM2_5();
+    measurement->variant.environment_metrics.pm100_environmental = SNGCJA5.getPM10();
 
     return true;
 }

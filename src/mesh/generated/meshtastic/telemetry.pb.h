@@ -159,6 +159,15 @@ typedef struct _meshtastic_EnvironmentMetrics {
     float wind_lull;
     bool has_co2;
     float co2;
+    /* Concentration Units Environmental PM1.0 */
+    bool has_pm10_environmental;
+    float pm10_environmental;
+    /* Concentration Units Environmental PM2.5 */
+    bool has_pm25_environmental;
+    float pm25_environmental;
+    /* Concentration Units Environmental PM10.0 */
+    bool has_pm100_environmental;
+    float pm100_environmental;
 } meshtastic_EnvironmentMetrics;
 
 /* Power Metrics (voltage / current / etc) */
@@ -194,15 +203,6 @@ typedef struct _meshtastic_AirQualityMetrics {
     /* Concentration Units Standard PM10.0 */
     bool has_pm100_standard;
     uint32_t pm100_standard;
-    /* Concentration Units Environmental PM1.0 */
-    bool has_pm10_environmental;
-    uint32_t pm10_environmental;
-    /* Concentration Units Environmental PM2.5 */
-    bool has_pm25_environmental;
-    uint32_t pm25_environmental;
-    /* Concentration Units Environmental PM10.0 */
-    bool has_pm100_environmental;
-    uint32_t pm100_environmental;
     /* 0.3um Particle Count */
     bool has_particles_03um;
     uint32_t particles_03um;
@@ -323,7 +323,7 @@ extern "C" {
 #define meshtastic_Telemetry_init_default        {0, 0, {meshtastic_DeviceMetrics_init_default}}
 #define meshtastic_Nau7802Config_init_default    {0, 0}
 #define meshtastic_DeviceMetrics_init_zero       {false, 0, false, 0, false, 0, false, 0, false, 0}
-#define meshtastic_EnvironmentMetrics_init_zero  {false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0}
+#define meshtastic_EnvironmentMetrics_init_zero  {false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0}
 #define meshtastic_PowerMetrics_init_zero        {false, 0, false, 0, false, 0, false, 0, false, 0, false, 0}
 #define meshtastic_AirQualityMetrics_init_zero   {false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0, false, 0}
 #define meshtastic_LocalStats_init_zero          {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
@@ -363,9 +363,9 @@ extern "C" {
 #define meshtastic_AirQualityMetrics_pm10_standard_tag 1
 #define meshtastic_AirQualityMetrics_pm25_standard_tag 2
 #define meshtastic_AirQualityMetrics_pm100_standard_tag 3
-#define meshtastic_AirQualityMetrics_pm10_environmental_tag 4
-#define meshtastic_AirQualityMetrics_pm25_environmental_tag 5
-#define meshtastic_AirQualityMetrics_pm100_environmental_tag 6
+#define meshtastic_EnvironmentMetrics_pm10_environmental_tag 19
+#define meshtastic_EnvironmentMetrics_pm25_environmental_tag 20
+#define meshtastic_EnvironmentMetrics_pm100_environmental_tag 21
 #define meshtastic_AirQualityMetrics_particles_03um_tag 7
 #define meshtastic_AirQualityMetrics_particles_05um_tag 8
 #define meshtastic_AirQualityMetrics_particles_10um_tag 9
@@ -425,7 +425,10 @@ X(a, STATIC,   OPTIONAL, FLOAT,    wind_speed,       14) \
 X(a, STATIC,   OPTIONAL, FLOAT,    weight,           15) \
 X(a, STATIC,   OPTIONAL, FLOAT,    wind_gust,        16) \
 X(a, STATIC,   OPTIONAL, FLOAT,    wind_lull,        17) \
-X(a, STATIC,   OPTIONAL, FLOAT,   co2,              18)
+X(a, STATIC,   OPTIONAL, FLOAT,    co2,              18) \
+X(a, STATIC,   OPTIONAL, FLOAT,    pm10_environmental,   19) \
+X(a, STATIC,   OPTIONAL, FLOAT,    pm25_environmental,   20) \
+X(a, STATIC,   OPTIONAL, FLOAT,    pm100_environmental,  21)
 #define meshtastic_EnvironmentMetrics_CALLBACK NULL
 #define meshtastic_EnvironmentMetrics_DEFAULT NULL
 
@@ -443,9 +446,6 @@ X(a, STATIC,   OPTIONAL, FLOAT,    ch3_current,       6)
 X(a, STATIC,   OPTIONAL, UINT32,   pm10_standard,     1) \
 X(a, STATIC,   OPTIONAL, UINT32,   pm25_standard,     2) \
 X(a, STATIC,   OPTIONAL, UINT32,   pm100_standard,    3) \
-X(a, STATIC,   OPTIONAL, UINT32,   pm10_environmental,   4) \
-X(a, STATIC,   OPTIONAL, UINT32,   pm25_environmental,   5) \
-X(a, STATIC,   OPTIONAL, UINT32,   pm100_environmental,   6) \
 X(a, STATIC,   OPTIONAL, UINT32,   particles_03um,    7) \
 X(a, STATIC,   OPTIONAL, UINT32,   particles_05um,    8) \
 X(a, STATIC,   OPTIONAL, UINT32,   particles_10um,    9) \
