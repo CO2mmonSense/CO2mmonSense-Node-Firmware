@@ -79,17 +79,17 @@ typedef enum _meshtastic_TelemetrySensorType {
     /* SCD40/SCD41 CO2, humidity, temperature sensor */
     meshtastic_TelemetrySensorType_SCD4X = 32,
     /* Panasonic SN-JCGA5 PM Sensor*/
-    meshtastic_TelemetrySensorType_PANASONIC_PM = 33
+    meshtastic_TelemetrySensorType_PANASONIC_PM = 33,
     /* ClimateGuard RadSens, radiation, Geiger-Muller Tube */
-    meshtastic_TelemetrySensorType_RADSENS = 33,
+    meshtastic_TelemetrySensorType_RADSENS = 34,
     /* High accuracy current and voltage */
-    meshtastic_TelemetrySensorType_INA226 = 34,
+    meshtastic_TelemetrySensorType_INA226 = 35,
     /* DFRobot Gravity tipping bucket rain gauge */
-    meshtastic_TelemetrySensorType_DFROBOT_RAIN = 35,
+    meshtastic_TelemetrySensorType_DFROBOT_RAIN = 36,
     /* Infineon DPS310 High accuracy pressure and temperature */
-    meshtastic_TelemetrySensorType_DPS310 = 36,
+    meshtastic_TelemetrySensorType_DPS310 = 37,
     /* RAKWireless RAK12035 Soil Moisture Sensor Module */
-    meshtastic_TelemetrySensorType_RAK12035 = 37
+    meshtastic_TelemetrySensorType_RAK12035 = 38
 } meshtastic_TelemetrySensorType;
 
 /* Struct definitions */
@@ -458,7 +458,7 @@ X(a, STATIC,   OPTIONAL, FLOAT,    wind_lull,        17) \
 X(a, STATIC,   OPTIONAL, FLOAT,    co2,              18) \
 X(a, STATIC,   OPTIONAL, FLOAT,    pm10_environmental,   19) \
 X(a, STATIC,   OPTIONAL, FLOAT,    pm25_environmental,   20) \
-X(a, STATIC,   OPTIONAL, FLOAT,    pm100_environmental,  21)
+X(a, STATIC,   OPTIONAL, FLOAT,    pm100_environmental,  21) \
 X(a, STATIC,   OPTIONAL, FLOAT,    radiation,        22) \
 X(a, STATIC,   OPTIONAL, FLOAT,    rainfall_1h,      23) \
 X(a, STATIC,   OPTIONAL, FLOAT,    rainfall_24h,     24) \
