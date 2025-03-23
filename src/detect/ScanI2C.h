@@ -64,7 +64,7 @@ class ScanI2C
         TPS65233,
         MPR121KB,
         SCD30,
-        SNGCJA5
+        SNGCJA5,
         CGRADSENS,
         INA226,
         NXP_SE050,

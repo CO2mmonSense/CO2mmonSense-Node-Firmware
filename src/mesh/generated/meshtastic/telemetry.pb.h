@@ -89,7 +89,7 @@ typedef enum _meshtastic_TelemetrySensorType {
     /* Infineon DPS310 High accuracy pressure and temperature */
     meshtastic_TelemetrySensorType_DPS310 = 37,
     /* RAKWireless RAK12035 Soil Moisture Sensor Module */
-    meshtastic_TelemetrySensorType_RAK12035 = 38
+    meshtastic_TelemetrySensorType_RAK12035 = 38,
 } meshtastic_TelemetrySensorType;
 
 /* Struct definitions */
