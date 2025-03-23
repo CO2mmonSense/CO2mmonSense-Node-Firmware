@@ -1,5 +1,5 @@
 #include "ButtonThread.h"
-#include "../userPrefs.h"
+
 #include "configuration.h"
 #if !MESHTASTIC_EXCLUDE_GPS
 #include "GPS.h"
@@ -11,6 +11,7 @@
 #include "main.h"
 #include "modules/ExternalNotificationModule.h"
 #include "power.h"
+#include "sleep.h"
 #ifdef ARCH_PORTDUINO
 #include "platform/portduino/PortduinoGlue.h"
 #endif
@@ -46,7 +47,7 @@ ButtonThread::ButtonThread() : OSThread("Button")
 #ifdef USERPREFS_BUTTON_PIN
     int pin = config.device.button_gpio ? config.device.button_gpio : USERPREFS_BUTTON_PIN; // Resolved button pin
 #endif
-#if defined(HELTEC_CAPSULE_SENSOR_V3)
+#if defined(HELTEC_CAPSULE_SENSOR_V3) || defined(HELTEC_SENSOR_HUB)
     this->userButton = OneButton(pin, false, false);
 #elif defined(BUTTON_ACTIVE_LOW)
     this->userButton = OneButton(pin, BUTTON_ACTIVE_LOW, BUTTON_ACTIVE_PULLUP);
@@ -97,6 +98,13 @@ ButtonThread::ButtonThread() : OSThread("Button")
     userButtonTouch = OneButton(BUTTON_PIN_TOUCH, true, true);
     userButtonTouch.setPressMs(BUTTON_TOUCH_MS);
     userButtonTouch.attachLongPressStart(touchPressedLongStart); // Better handling with longpress than click?
+#endif
+
+#ifdef ARCH_ESP32
+    // Register callbacks for before and after lightsleep
+    // Used to detach and reattach interrupts
+    lsObserver.observe(&notifyLightSleep);
+    lsEndObserver.observe(&notifyLightSleepEnd);
 #endif
 
     attachButtonInterrupts();
@@ -189,6 +197,20 @@ int32_t ButtonThread::runOnce()
             // 4 clicks: toggle backlight
             case 4:
                 digitalWrite(PIN_EINK_EN, digitalRead(PIN_EINK_EN) == LOW);
+                break;
+#endif
+#if defined(RAK_4631)
+            // 5 clicks: start accelerometer/magenetometer calibration for 30 seconds
+            case 5:
+                if (accelerometerThread) {
+                    accelerometerThread->calibrate(30);
+                }
+                break;
+            // 6 clicks: start accelerometer/magenetometer calibration for 60 seconds
+            case 6:
+                if (accelerometerThread) {
+                    accelerometerThread->calibrate(60);
+                }
                 break;
 #endif
             // No valid multipress action
@@ -305,6 +327,26 @@ void ButtonThread::detachButtonInterrupts()
     detachInterrupt(BUTTON_PIN_TOUCH);
 #endif
 }
+
+#ifdef ARCH_ESP32
+
+// Detach our class' interrupts before lightsleep
+// Allows sleep.cpp to configure its own interrupts, which wake the device on user-button press
+int ButtonThread::beforeLightSleep(void *unused)
+{
+    detachButtonInterrupts();
+    return 0; // Indicates success
+}
+
+// Reconfigure our interrupts
+// Our class' interrupts were disconnected during sleep, to allow the user button to wake the device from sleep
+int ButtonThread::afterLightSleep(esp_sleep_wakeup_cause_t cause)
+{
+    attachButtonInterrupts();
+    return 0; // Indicates success
+}
+
+#endif
 
 /**
  * Watch a GPIO and if we get an IRQ, wake the main thread.

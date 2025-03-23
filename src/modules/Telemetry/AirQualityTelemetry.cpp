@@ -50,12 +50,12 @@ int32_t AirQualityTelemetryModule::runOnce()
                     nodeTelemetrySensorsMap[meshtastic_TelemetrySensorType_PANASONIC_PM].first = found.address.address;
                     nodeTelemetrySensorsMap[meshtastic_TelemetrySensorType_PANASONIC_PM].second =
                         i2cScanner->fetchI2CBus(found.address);
-                    return 1000;
+                    return setStartDelay();
                 }
 #endif
                 return disable();
             }
-            return 1000;
+            return setStartDelay();
         }
         return disable();
     } else {
@@ -110,8 +110,11 @@ bool AirQualityTelemetryModule::getAirQualityTelemetry(meshtastic_Telemetry *m)
 
     m->time = getTime();
     m->which_variant = meshtastic_Telemetry_air_quality_metrics_tag;
+    m->variant.air_quality_metrics.has_pm10_standard = true;
     m->variant.air_quality_metrics.pm10_standard = data.pm10_standard;
+    m->variant.air_quality_metrics.has_pm25_standard = true;
     m->variant.air_quality_metrics.pm25_standard = data.pm25_standard;
+    m->variant.air_quality_metrics.has_pm100_standard = true;
     m->variant.air_quality_metrics.pm100_standard = data.pm100_standard;
 
     LOG_INFO("Send: PM1.0(Standard)=%i, PM2.5(Standard)=%i, PM10.0(Standard)=%i", m->variant.air_quality_metrics.pm10_standard,

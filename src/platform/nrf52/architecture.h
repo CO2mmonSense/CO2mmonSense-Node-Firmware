@@ -47,6 +47,8 @@
 #define HW_VENDOR meshtastic_HardwareModel_PPR
 #elif defined(RAK2560)
 #define HW_VENDOR meshtastic_HardwareModel_RAK2560
+#elif defined(WISMESH_TAP)
+#define HW_VENDOR meshtastic_HardwareModel_WISMESH_TAP
 #elif defined(RAK4630)
 #define HW_VENDOR meshtastic_HardwareModel_RAK4631
 #elif defined(TTGO_T_ECHO)
@@ -73,6 +75,8 @@
 #define HW_VENDOR meshtastic_HardwareModel_PRIVATE_HW
 #elif defined(HELTEC_T114)
 #define HW_VENDOR meshtastic_HardwareModel_HELTEC_MESH_NODE_T114
+#elif defined(SEEED_XIAO_NRF52840_KIT)
+#define HW_VENDOR meshtastic_HardwareModel_XIAO_NRF52_KIT
 #else
 #define HW_VENDOR meshtastic_HardwareModel_NRF52_UNKNOWN
 #endif
