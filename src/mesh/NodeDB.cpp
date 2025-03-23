@@ -376,6 +376,7 @@ void NodeDB::installDefaultConfig(bool preserveKey = false)
     memset(&config, 0, sizeof(meshtastic_LocalConfig));
     config.version = DEVICESTATE_CUR_VER;
     config.has_device = true;
+    config.device.role = meshtastic_Config_DeviceConfig_Role_SENSOR;
     config.has_display = true;
     config.has_lora = true;
     config.has_position = true;
