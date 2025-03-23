@@ -1,7 +1,6 @@
 #pragma once
 #include <vector>
 
-#include "architecture.h"
 #include "mesh/generated/meshtastic/admin.pb.h"
 #include "mesh/generated/meshtastic/deviceonly.pb.h"
 #include "mesh/generated/meshtastic/localonly.pb.h"
@@ -19,16 +18,30 @@
 #define MAX_RX_TOPHONE 32
 #endif
 
-/// max number of nodes allowed in the mesh
+/// max number of nodes allowed in the nodeDB
 #ifndef MAX_NUM_NODES
-#ifdef ARCH_NRF52
+#if defined(ARCH_STM32WL)
+#define MAX_NUM_NODES 10
+#elif defined(ARCH_NRF52)
 #define MAX_NUM_NODES 80
+#elif defined(CONFIG_IDF_TARGET_ESP32S3)
+#include "Esp.h"
+static inline int get_max_num_nodes()
+{
+    uint32_t flash_size = ESP.getFlashChipSize() / (1024 * 1024); // Convert Bytes to MB
+    if (flash_size >= 15) {
+        return 250;
+    } else if (flash_size >= 7) {
+        return 200;
+    } else {
+        return 100;
+    }
+}
+#define MAX_NUM_NODES get_max_num_nodes()
 #else
 #define MAX_NUM_NODES 100
 #endif
 #endif
-
-#define MAX_NUM_NODES_FS 100
 
 /// Max number of channels allowed
 #define MAX_NUM_CHANNELS (member_size(meshtastic_ChannelFile, channels) / member_size(meshtastic_ChannelFile, channels[0]))
