@@ -296,16 +296,16 @@ void EnvironmentTelemetryModule::drawFrame(OLEDDisplay *display, OLEDDisplayUiSt
                             "CO2: " + last_co2);
     }
 
-    if (lastMeasurement.variant.environment_metrics.pm10_environmental != 0)
-    {
-        display->drawString(x, y += _fontHeight(FONT_SMALL),
-                            "PM10: " + last_pm10);
-    }
-
     if (lastMeasurement.variant.environment_metrics.pm25_environmental != 0)
     {
         display->drawString(x, y += _fontHeight(FONT_SMALL),
                             "PM2.5: " + last_pm25);
+    }
+
+    if (lastMeasurement.variant.environment_metrics.pm10_environmental != 0)
+    {
+        display->drawString(x, y += _fontHeight(FONT_SMALL),
+                            "PM10: " + last_pm10);
     }
 
     if (lastMeasurement.variant.environment_metrics.pm100_environmental != 0)
