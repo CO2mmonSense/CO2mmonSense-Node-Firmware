@@ -280,16 +280,38 @@ void EnvironmentTelemetryModule::drawFrame(OLEDDisplay *display, OLEDDisplayUiSt
     }
 
     String last_co2 = String(lastMeasurement.variant.environment_metrics.co2, 0) + "ppm";
+    String last_temp = String(lastMeasurement.variant.environment_metrics.temperature, 0) + "°C";
+    String last_humidity = String(lastMeasurement.variant.environment_metrics.relative_humidity, 0) + "%";
+    String last_pm10 = String(lastMeasurement.variant.environment_metrics.pm10_environmental, 0) + "µg/m³";
+    String last_pm25 = String(lastMeasurement.variant.environment_metrics.pm25_environmental, 0) + "µg/m³";
+    String last_pm100 = String(lastMeasurement.variant.environment_metrics.pm100_environmental, 0) + "µg/m³";
 
     // Continue with the remaining details
     display->drawString(x, y += _fontHeight(FONT_SMALL),
-                        "Temp/Hum: " + last_temp + " / " +
-                            String(lastMeasurement.variant.environment_metrics.relative_humidity, 0) + "%");
+                        "Temp/Hum: " + last_temp + " / " + last_humidity);
 
     if (lastMeasurement.variant.environment_metrics.co2 != 0)
     {
         display->drawString(x, y += _fontHeight(FONT_SMALL),
                             "CO2: " + last_co2);
+    }
+
+    if (lastMeasurement.variant.environment_metrics.pm10_environmental != 0)
+    {
+        display->drawString(x, y += _fontHeight(FONT_SMALL),
+                            "PM10: " + last_pm10);
+    }
+
+    if (lastMeasurement.variant.environment_metrics.pm25_environmental != 0)
+    {
+        display->drawString(x, y += _fontHeight(FONT_SMALL),
+                            "PM2.5: " + last_pm25);
+    }
+
+    if (lastMeasurement.variant.environment_metrics.pm100_environmental != 0)
+    {
+        display->drawString(x, y += _fontHeight(FONT_SMALL),
+                            "PM100: " + last_pm100);
     }
 
     if (lastMeasurement.variant.environment_metrics.barometric_pressure != 0)

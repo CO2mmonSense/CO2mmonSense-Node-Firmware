@@ -23,6 +23,10 @@
 #define SNGCJA5_ADDR 0x33
 #endif
 
+#ifndef ATECC608B_ADDR
+#define ATECC608B_ADDR 0x60
+#endif
+
 bool in_array(uint8_t *array, int size, uint8_t lookfor)
 {
     int i;
@@ -134,10 +138,10 @@ uint16_t ScanI2CTwoWire::getRegisterValue(const ScanI2CTwoWire::RegisterLocation
     return value;
 }
 
-#define SCAN_SIMPLE_CASE(ADDR, T, ...) \
-    case ADDR:                         \
-        logFoundDevice(__VA_ARGS__);   \
-        type = T;                      \
+#define SCAN_SIMPLE_CASE(ADDR, T, NAME, ...) \
+    case ADDR:                               \
+        logFoundDevice(NAME, __VA_ARGS__);   \
+        type = T;                            \
         break;
 
 void ScanI2CTwoWire::scanPort(I2CPort port, uint8_t *address, uint8_t asize)
@@ -229,24 +233,11 @@ void ScanI2CTwoWire::scanPort(I2CPort port, uint8_t *address, uint8_t asize)
                 }
                 break;
 
-                SCAN_SIMPLE_CASE(SNGCJA5_ADDR, SNGCJA5, "SN-GCJA5 PM Sensor Found")
-
+                SCAN_SIMPLE_CASE(SNGCJA5_ADDR, SNGCJA5, "SN-GCJA5 PM Sensor Found", (uint8_t)addr.address)
 #if !defined(ARCH_PORTDUINO) && !defined(ARCH_STM32WL)
             case ATECC608B_ADDR:
-#ifdef RP2040_SLOW_CLOCK
-                if (atecc.begin(addr.address, Wire, Serial2) == true)
-#else
-                if (atecc.begin(addr.address) == true)
-#endif
-
-                {
-                    LOG_INFO("ATECC608B initialized");
-                }
-                else
-                {
-                    LOG_WARN("ATECC608B initialization failed");
-                }
-                printATECCInfo();
+                logFoundDevice("ATECC608B", (uint8_t)addr.address);
+                type = ScanI2C::DeviceType::NONE;
                 break;
 #endif
 
@@ -280,13 +271,12 @@ void ScanI2CTwoWire::scanPort(I2CPort port, uint8_t *address, uint8_t asize)
                     type = CARDKB;
                 }
                 break;
+                SCAN_SIMPLE_CASE(TDECK_KB_ADDR, TDECKKB, "T-Deck keyboard", (uint8_t)addr.address)
+                SCAN_SIMPLE_CASE(BBQ10_KB_ADDR, BBQ10KB, "BB Q10", (uint8_t)addr.address)
 
-                SCAN_SIMPLE_CASE(TDECK_KB_ADDR, TDECKKB, "T-Deck keyboard", (uint8_t)addr.address);
-                SCAN_SIMPLE_CASE(BBQ10_KB_ADDR, BBQ10KB, "BB Q10", (uint8_t)addr.address);
-
-                SCAN_SIMPLE_CASE(ST7567_ADDRESS, SCREEN_ST7567, "ST7567", (uint8_t)addr.address);
+                SCAN_SIMPLE_CASE(ST7567_ADDRESS, SCREEN_ST7567, "ST7567", (uint8_t)addr.address)
 #ifdef HAS_NCP5623
-                SCAN_SIMPLE_CASE(NCP5623_ADDR, NCP5623, "NCP5623", (uint8_t)addr.address);
+                SCAN_SIMPLE_CASE(NCP5623_ADDR, NCP5623, "NCP5623", (uint8_t)addr.address)
 #endif
 #ifdef HAS_PMU
                 SCAN_SIMPLE_CASE(XPOWERS_AXP192_AXP2101_ADDRESS, PMU_AXP192_AXP2101, "AXP192/AXP2101", (uint8_t)addr.address)
