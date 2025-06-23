@@ -62,7 +62,7 @@ static const uint8_t T12 = 12;
 static const uint8_t T13 = 13;
 static const uint8_t T14 = 14;
 
-static const uint8_t Vext = 36;
+static const uint8_t Vext = 3; // Vext pin is actually 3 on the board
 static const uint8_t LED = 18;
 
 static const uint8_t RST_LoRa = 12;
