@@ -33,7 +33,8 @@
 // GPS LNA SW7125DE:    VCC(4), pulls up SHDN(5) through 10kR
 // LED:                 VDD, LEDA (through diode)
 
-#define VEXT_ENABLE 3 // active HIGH - powers the GPS, GPS LNA and OLED
+#define VEXT_ENABLE 3  // active HIGH - powers the GPS, GPS LNA and OLED
+#define PIN_POWER_EN 3 // same as Vext control pin, can be used to power peripherals
 #define VEXT_ON_VALUE HIGH
 #define BUTTON_PIN 0
 
