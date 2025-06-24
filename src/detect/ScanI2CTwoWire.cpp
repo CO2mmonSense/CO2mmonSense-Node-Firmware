@@ -221,7 +221,7 @@ void ScanI2CTwoWire::scanPort(I2CPort port, uint8_t *address, uint8_t asize)
             case SCD30_I2CADDR_DEFAULT:
                 registerValue = getRegisterValue(ScanI2CTwoWire::RegisterLocation(addr, (ScanI2C::RegisterAddress)0xD100), 2);
                 LOG_DEBUG("Register MFG_UID: 0x%x", registerValue);
-                if (registerValue == 0x60)
+                if (registerValue == 0x61)
                 {
                     LOG_INFO("SCD30 sensor found at address 0x%x", (uint8_t)addr.address);
                     type = SCD30;

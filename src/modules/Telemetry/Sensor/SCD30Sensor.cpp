@@ -13,16 +13,11 @@ SCD30Sensor::SCD30Sensor() : TelemetrySensor(meshtastic_TelemetrySensorType_CUST
 int32_t SCD30Sensor::runOnce()
 {
     LOG_INFO("Init sensor: %s", sensorName);
-    if (!hasSensor()) {
+    if (!hasSensor())
+    {
         return DEFAULT_SENSOR_MINIMUM_WAIT_TIME_BETWEEN_READS;
     }
     status = scd30.begin(nodeTelemetrySensorsMap[sensorType].first, nodeTelemetrySensorsMap[sensorType].second);
-
-    //bme280.setSampling(Adafruit_BME280::MODE_FORCED,
-    //                   Adafruit_BME280::SAMPLING_X1, // Temp. oversampling
-    //                   Adafruit_BME280::SAMPLING_X1, // Pressure oversampling
-    //                   Adafruit_BME280::SAMPLING_X1, // Humidity oversampling
-    //                   Adafruit_BME280::FILTER_OFF, Adafruit_BME280::STANDBY_MS_1000);
 
     return initI2CSensor();
 }

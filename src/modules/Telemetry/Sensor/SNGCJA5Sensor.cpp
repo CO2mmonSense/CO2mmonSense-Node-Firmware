@@ -18,12 +18,6 @@ int32_t SNGCJA5Sensor::runOnce()
     }
     status = SNGCJA5.begin(*nodeTelemetrySensorsMap[sensorType].second); //dereferenced
 
-    //bme280.setSampling(Adafruit_BME280::MODE_FORCED,
-    //                   Adafruit_BME280::SAMPLING_X1, // Temp. oversampling
-    //                   Adafruit_BME280::SAMPLING_X1, // Pressure oversampling
-    //                   Adafruit_BME280::SAMPLING_X1, // Humidity oversampling
-    //                   Adafruit_BME280::FILTER_OFF, Adafruit_BME280::STANDBY_MS_1000);
-
     return initI2CSensor();
 }
 
