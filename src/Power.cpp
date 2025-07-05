@@ -278,6 +278,9 @@ class AnalogBatteryLevel : public HasBatteryLevel
         // Do not call analogRead() often.
         const uint32_t min_read_interval = 5000;
         if (!initial_read_done || !Throttle::isWithinTimespanMs(last_read_time_ms, min_read_interval)) {
+            if (initial_read_done) {
+                previous_read_value = last_read_value;
+            }
             last_read_time_ms = millis();
 
             uint32_t raw = 0;
@@ -390,6 +393,20 @@ class AnalogBatteryLevel : public HasBatteryLevel
     /// so we use EXT_PWR_DETECT GPIO pin to detect external power source
     virtual bool isVbusIn() override
     {
+#ifdef DETECT_CHARGING_BY_VOLTAGE_INCREASE
+        uint16_t current_voltage = getBattVoltage();
+        // Check if battery voltage is increasing, but only if we have a previous reading.
+        bool is_increasing = initial_read_done && (current_voltage > previous_read_value) && (previous_read_value > 0);
+
+        // A very small increase could be noise, so we check for a minimum delta.
+        const float MIN_VOLTAGE_INCREASE_MV = 2.0f;
+        if (is_increasing && (current_voltage - previous_read_value) >= MIN_VOLTAGE_INCREASE_MV) {
+            return true;
+        }
+
+        // Keep the existing logic that if voltage is high enough, we are charging (or full).
+        return current_voltage > chargingVolt;
+#else
 #ifdef EXT_PWR_DETECT
 #if defined(HELTEC_CAPSULE_SENSOR_V3) || defined(HELTEC_SENSOR_HUB)
         // if external powered that pin will be pulled down
@@ -406,6 +423,7 @@ class AnalogBatteryLevel : public HasBatteryLevel
 #endif
 #endif
         return getBattVoltage() > chargingVolt;
+#endif
     }
 
     /// Assume charging if we have a battery and external power is connected.
@@ -452,6 +470,7 @@ class AnalogBatteryLevel : public HasBatteryLevel
     // This value is over-written by the first ADC reading, it the voltage seems reasonable.
     bool initial_read_done = false;
     float last_read_value = (OCV[NUM_OCV_POINTS - 1] * NUM_CELLS);
+    float previous_read_value = 0.0f;
     uint32_t last_read_time_ms = 0;
 
 #if HAS_TELEMETRY && !MESHTASTIC_EXCLUDE_ENVIRONMENTAL_SENSOR && defined(HAS_RAKPROT)
