@@ -15,7 +15,7 @@ extern SX1509 gpioExtender;
 #endif
 
 #ifndef TFT_MESH
-#define TFT_MESH COLOR565(0x67, 0xEA, 0x94)
+#define TFT_MESH COLOR565(0x77, 0xBC, 0x3F) // CO2mmonSense green color
 #endif
 
 #if defined(ST7735S)

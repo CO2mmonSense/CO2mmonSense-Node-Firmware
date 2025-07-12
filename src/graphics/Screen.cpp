@@ -205,7 +205,11 @@ static void drawOEMIconScreen(const char *upperMsg, OLEDDisplay *display, OLEDDi
     display->setTextAlignment(TEXT_ALIGN_LEFT);
     const char *title = USERPREFS_OEM_TEXT;
     display->drawString(x + getStringCenteredX(title), y + SCREEN_HEIGHT - FONT_HEIGHT_MEDIUM, title);
+
+    // Add 'a Meshtastic project' below the website name
     display->setFont(FONT_SMALL);
+    const char *credit = "a Meshtastic project";
+    display->drawString(x + getStringCenteredX(credit), y + SCREEN_HEIGHT - FONT_HEIGHT_MEDIUM + FONT_HEIGHT_SMALL + 2, credit);
 
     // Draw region in upper left
     if (upperMsg)
