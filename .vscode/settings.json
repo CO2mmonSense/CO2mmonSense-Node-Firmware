@@ -6,7 +6,7 @@
   "files.trimFinalNewlines": false,
   "cmake.configureOnOpen": false,
   "[cpp]": {
-    "editor.defaultFormatter": "trunk.io"
+    "editor.defaultFormatter": "ms-vscode.cpptools"
   },
   "files.associations": {
     "*.tpp": "cpp",
@@ -22,6 +22,7 @@
     "memory": "cpp",
     "random": "cpp",
     "initializer_list": "cpp",
-    "typeinfo": "cpp"
+    "typeinfo": "cpp",
+    "*.xbm": "cpp"
   }
 }
