@@ -420,7 +420,7 @@ public:
     /// so we use EXT_PWR_DETECT GPIO pin to detect external power source
     virtual bool isVbusIn() override
     {
-#ifdef DETECT_CHARGING_BY_VOLTAGE_INCREASE
+#ifdef DETECT_CHARGING_BY_VOLTAGE_CHANGE
         uint16_t current_voltage = getBattVoltage();
         // Check if we have a previous reading.
         bool have_prev = initial_read_done && (previous_read_value > 0);
@@ -438,6 +438,7 @@ public:
                 if (vbus_debounce_counter >= VBUS_DEBOUNCE_THRESHOLD)
                 {
                     vbus_debounced_state = true;
+                    vbus_last_state_before_stable = 1;
                 }
             }
             else if (delta < -MIN_VOLTAGE_CHANGE_MV)
@@ -449,6 +450,7 @@ public:
                 if (vbus_nocharge_debounce_counter >= VBUS_DEBOUNCE_THRESHOLD)
                 {
                     vbus_debounced_state = false;
+                    vbus_last_state_before_stable = 2;
                 }
             }
             else
@@ -457,7 +459,10 @@ public:
                 vbus_stable_debounce_counter++;
                 vbus_debounce_counter = 0;
                 vbus_nocharge_debounce_counter = 0;
-                vbus_debounced_state = true; // if stable, we are charging
+                vbus_debounced_state = vbus_last_state_before_stable;
+                /* batteries tend to have a non linear voltage curve for charging / discharging
+                which can cause a false detection of a stable charge state due to a slower battery discharge.
+                For this reason, we set the debounced state to be equal to the last non-stable state in order to prevent this.*/
             }
         }
         // Only return true/false after threshold consecutive detections, otherwise return last debounced state
@@ -537,6 +542,7 @@ private:
     int vbus_debounce_counter = 0;
     int vbus_nocharge_debounce_counter = 0;
     int vbus_stable_debounce_counter = 0;
+    int vbus_last_state_before_stable = 0; // 1 = charging, 0 = not charging or unknown
     static constexpr int VBUS_DEBOUNCE_THRESHOLD = 3;
     bool vbus_debounced_state = false;
 
